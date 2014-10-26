@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1
--- Время создания: Окт 25 2014 г., 15:20
+-- Время создания: Окт 26 2014 г., 15:46
 -- Версия сервера: 5.6.19
 -- Версия PHP: 5.2.12
 
@@ -39,10 +39,10 @@ CREATE TABLE IF NOT EXISTS `courses` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `course_teachers`
+-- Структура таблицы `courses_teachers`
 --
 
-CREATE TABLE IF NOT EXISTS `course_teachers` (
+CREATE TABLE IF NOT EXISTS `courses_teachers` (
   `id` int(20) NOT NULL AUTO_INCREMENT,
   `course_id` int(20) NOT NULL,
   `teacher_id` int(20) NOT NULL,
@@ -54,10 +54,10 @@ CREATE TABLE IF NOT EXISTS `course_teachers` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `degree`
+-- Структура таблицы `degrees`
 --
 
-CREATE TABLE IF NOT EXISTS `degree` (
+CREATE TABLE IF NOT EXISTS `degrees` (
   `id` int(20) NOT NULL AUTO_INCREMENT,
   `name` char(50) NOT NULL,
   PRIMARY KEY (`id`)
@@ -73,9 +73,10 @@ CREATE TABLE IF NOT EXISTS `faculties` (
   `id` int(20) NOT NULL AUTO_INCREMENT,
   `name` char(50) NOT NULL,
   `adress` char(50) NOT NULL,
-  `year` int(4) NOT NULL,
-  `name_dekan` char(50) NOT NULL,
-  PRIMARY KEY (`id`)
+  `year` date NOT NULL,
+  `teacher_id` int(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `teacher_id` (`teacher_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -95,10 +96,10 @@ CREATE TABLE IF NOT EXISTS `groups` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `group_courses`
+-- Структура таблицы `groups_courses`
 --
 
-CREATE TABLE IF NOT EXISTS `group_courses` (
+CREATE TABLE IF NOT EXISTS `groups_courses` (
   `id` int(20) NOT NULL AUTO_INCREMENT,
   `group_id` int(20) NOT NULL,
   `course_id` int(20) NOT NULL,
@@ -110,10 +111,10 @@ CREATE TABLE IF NOT EXISTS `group_courses` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `post`
+-- Структура таблицы `posts`
 --
 
-CREATE TABLE IF NOT EXISTS `post` (
+CREATE TABLE IF NOT EXISTS `posts` (
   `id` int(20) NOT NULL AUTO_INCREMENT,
   `name` char(50) NOT NULL,
   PRIMARY KEY (`id`)
@@ -129,7 +130,7 @@ CREATE TABLE IF NOT EXISTS `teachers` (
   `id` int(20) NOT NULL AUTO_INCREMENT,
   `first_name` char(50) NOT NULL,
   `second_name` char(50) NOT NULL,
-  `date` char(50) NOT NULL,
+  `date` date NOT NULL,
   `post_id` int(20) NOT NULL,
   `degree_id` int(20) NOT NULL,
   `topic` char(50) NOT NULL,
@@ -149,25 +150,31 @@ ALTER TABLE `courses`
   ADD CONSTRAINT `courses_ibfk_1` FOREIGN KEY (`faculty_id`) REFERENCES `faculties` (`id`);
 
 --
--- Ограничения внешнего ключа таблицы `course_teachers`
+-- Ограничения внешнего ключа таблицы `courses_teachers`
 --
-ALTER TABLE `course_teachers`
-  ADD CONSTRAINT `course_teachers_ibfk_2` FOREIGN KEY (`teacher_id`) REFERENCES `teachers` (`id`),
-  ADD CONSTRAINT `course_teachers_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`);
+ALTER TABLE `courses_teachers`
+  ADD CONSTRAINT `courses_teachers_ibfk_2` FOREIGN KEY (`teacher_id`) REFERENCES `teachers` (`id`),
+  ADD CONSTRAINT `courses_teachers_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`);
 
 --
--- Ограничения внешнего ключа таблицы `group_courses`
+-- Ограничения внешнего ключа таблицы `faculties`
 --
-ALTER TABLE `group_courses`
-  ADD CONSTRAINT `group_courses_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`),
-  ADD CONSTRAINT `group_courses_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`);
+ALTER TABLE `faculties`
+  ADD CONSTRAINT `faculties_ibfk_1` FOREIGN KEY (`teacher_id`) REFERENCES `teachers` (`id`);
+
+--
+-- Ограничения внешнего ключа таблицы `groups_courses`
+--
+ALTER TABLE `groups_courses`
+  ADD CONSTRAINT `groups_courses_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`),
+  ADD CONSTRAINT `groups_courses_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`);
 
 --
 -- Ограничения внешнего ключа таблицы `teachers`
 --
 ALTER TABLE `teachers`
-  ADD CONSTRAINT `teachers_ibfk_2` FOREIGN KEY (`degree_id`) REFERENCES `degree` (`id`),
-  ADD CONSTRAINT `teachers_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`);
+  ADD CONSTRAINT `teachers_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`),
+  ADD CONSTRAINT `teachers_ibfk_2` FOREIGN KEY (`degree_id`) REFERENCES `degrees` (`id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
