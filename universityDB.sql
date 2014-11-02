@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `degrees` (
 CREATE TABLE IF NOT EXISTS `faculties` (
   `id` int(20) NOT NULL AUTO_INCREMENT,
   `name` char(50) NOT NULL,
-  `adress` char(50) NOT NULL,
+  `adress` char(50) NOT NULL, -- address
   `year` date NOT NULL,
   `teacher_id` int(50) NOT NULL,
   PRIMARY KEY (`id`),
