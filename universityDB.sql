@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Хост: 127.0.0.1
--- Время создания: Ноя 02 2014 г., 04:34
+-- Время создания: Ноя 03 2014 г., 18:10
 -- Версия сервера: 5.6.19
 -- Версия PHP: 5.2.12
 
@@ -73,7 +73,6 @@ INSERT INTO `courses_teachers` (`id`, `course_id`, `teacher_id`) VALUES
 (4, 2, 1),
 (5, 1, 1),
 (7, 1, 11),
-(9, 1, 14),
 (10, 4, 15),
 (11, 4, 16),
 (12, 8, 13),
@@ -221,11 +220,9 @@ INSERT INTO `teachers` (`id`, `first_name`, `second_name`, `date`, `post_id`, `d
 (1, 'asdfas', 'asdf', '2014-10-09', 1, 1, 'asdfasd', 3),
 (7, 'Andru', 'Litun', '2014-11-05', 2, 2, 'reeeed', 3),
 (8, 'Madrile', 'Avgustine', '2014-11-12', 2, 2, 'topic', 3),
-(9, 'dsv', 'xzcvxzcv', '2014-11-04', 1, 1, 'dfdfdf', 3),
 (11, 'Avgust', 'Rush', '2014-11-06', 2, 2, 'topic', 3),
 (12, 'Hodan', 'Dmitro', '2014-11-05', 1, 1, 'rewq', 3),
 (13, 'one', 'one', '2014-11-19', 1, 1, 'one', 3),
-(14, 'two', 'two', '2014-11-06', 1, 1, 'two', 3),
 (15, 'mathematic', 'mathematic', '2014-11-06', 1, 1, 'math', 3),
 (16, 'hello', 'hello', '2014-11-22', 1, 1, 'f', 3),
 (17, 'rush2', 'rush2', '2014-11-07', 1, 1, 'rush2', 3),
@@ -239,35 +236,35 @@ INSERT INTO `teachers` (`id`, `first_name`, `second_name`, `date`, `post_id`, `d
 -- Ограничения внешнего ключа таблицы `courses`
 --
 ALTER TABLE `courses`
-  ADD CONSTRAINT `courses_ibfk_1` FOREIGN KEY (`faculty_id`) REFERENCES `faculties` (`id`);
+  ADD CONSTRAINT `courses_ibfk_2` FOREIGN KEY (`faculty_id`) REFERENCES `faculties` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Ограничения внешнего ключа таблицы `courses_teachers`
 --
 ALTER TABLE `courses_teachers`
-  ADD CONSTRAINT `courses_teachers_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`),
-  ADD CONSTRAINT `courses_teachers_ibfk_2` FOREIGN KEY (`teacher_id`) REFERENCES `teachers` (`id`);
+  ADD CONSTRAINT `courses_teachers_ibfk_4` FOREIGN KEY (`teacher_id`) REFERENCES `teachers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `courses_teachers_ibfk_3` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Ограничения внешнего ключа таблицы `faculties`
 --
 ALTER TABLE `faculties`
-  ADD CONSTRAINT `faculties_ibfk_1` FOREIGN KEY (`teacher_id`) REFERENCES `teachers` (`id`);
+  ADD CONSTRAINT `faculties_ibfk_2` FOREIGN KEY (`teacher_id`) REFERENCES `teachers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Ограничения внешнего ключа таблицы `groups_courses`
 --
 ALTER TABLE `groups_courses`
-  ADD CONSTRAINT `groups_courses_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`),
-  ADD CONSTRAINT `groups_courses_ibfk_2` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`);
+  ADD CONSTRAINT `groups_courses_ibfk_4` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `groups_courses_ibfk_3` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Ограничения внешнего ключа таблицы `teachers`
 --
 ALTER TABLE `teachers`
-  ADD CONSTRAINT `teachers_ibfk_3` FOREIGN KEY (`degree_id`) REFERENCES `degrees` (`id`),
-  ADD CONSTRAINT `teachers_ibfk_1` FOREIGN KEY (`faculty_id`) REFERENCES `faculties` (`id`),
-  ADD CONSTRAINT `teachers_ibfk_2` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`);
+  ADD CONSTRAINT `teachers_ibfk_6` FOREIGN KEY (`faculty_id`) REFERENCES `faculties` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `teachers_ibfk_4` FOREIGN KEY (`post_id`) REFERENCES `posts` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `teachers_ibfk_5` FOREIGN KEY (`degree_id`) REFERENCES `degrees` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
